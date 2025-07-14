@@ -32,6 +32,7 @@ class Node:
 
 
 def generate_n_nodes(level, number_nodes):
+    print("level " + str(level) + " - number of nodes: " + str(number_nodes))
     l = []
     for i in range(number_nodes):
         l.append(Node(str(level) + "_" + str(i)))
@@ -41,11 +42,13 @@ def pos_range(total_len_range, len_sub_range):
     return [x for x in range(total_len_range - len_sub_range + 1)]
 
 def add_connection(edges, left, right):
+    print("connect " + str(left) + " to " + str(right))
     for l in left:
         for r in right:
             edges.append([l,r])
 
 def assign_range(edges, left_nodes, right_nodes):
+    print("left nodes: " + str(left_nodes) + "; right nodes: " + str(right_nodes))
     # only one right node left?
     if len(right_nodes) == 1 or len(left_nodes) == 1:
         add_connection(edges, left_nodes, right_nodes)
@@ -54,8 +57,10 @@ def assign_range(edges, left_nodes, right_nodes):
     left_node = random.randint(0, len(left_nodes) - 1) # node position in array
     range_size = random.randint(1, len(right_nodes))  # number of connections
 
+    print("left node: " + str(left_node) + "; range size: " + str(range_size))
     # if first left node then range has to start at first right node
     if left_node == 0:
+        print("first")
         if range_size >= len(right_nodes):
             add_connection(edges, [left_nodes[left_node]], right_nodes)
             assign_range(edges, left_nodes[1:len(left_nodes)], [right_nodes[len(right_nodes)-1]])
@@ -68,6 +73,7 @@ def assign_range(edges, left_nodes, right_nodes):
 
     # if last left node then range has to end at last right node
     if left_node == len(left_nodes) - 1:
+        print("last")
         if range_size >= len(right_nodes):
             add_connection(edges, [left_nodes[left_node]], right_nodes)
             assign_range(edges, left_nodes[0:left_node], [right_nodes[0]])
@@ -79,12 +85,13 @@ def assign_range(edges, left_nodes, right_nodes):
         return
 
     # left node in middle
+    print("middle")
     pssbl_rng_positions = pos_range(len(right_nodes), range_size)
     range_pos = random.choice(pssbl_rng_positions)
-    first_right_nodes = right_nodes[0:range_pos]
+    first_right_nodes = right_nodes[0:range_pos+1]
     middle_right_nodes = right_nodes[range_pos:range_pos + range_size]
-    last_right_nodes = right_nodes[range_pos + range_size:len(right_nodes)]
-
+    last_right_nodes = right_nodes[range_pos + range_size-1:len(right_nodes)]
+    print("f: " + str(first_right_nodes) + "; m: " + str(middle_right_nodes) + "; l: " + str(last_right_nodes))
     add_connection(edges, [left_nodes[left_node]], middle_right_nodes)
     assign_range(edges, left_nodes[0:left_node], first_right_nodes)
     assign_range(edges, left_nodes[left_node+1:len(left_nodes)], last_right_nodes)
