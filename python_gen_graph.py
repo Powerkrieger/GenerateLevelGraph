@@ -35,7 +35,7 @@ def generate_n_nodes(level, number_nodes):
     print("level " + str(level) + " - number of nodes: " + str(number_nodes))
     l = []
     for i in range(number_nodes):
-        l.append(Node(str(level) + "_" + str(i)))
+        l.append(Node((level,i)))
     return l
 
 def pos_range(total_len_range, len_sub_range):
@@ -115,6 +115,16 @@ if __name__ == "__main__":
     assign_range(edges, level_2_nodes, level_3_nodes)
     assign_range(edges, level_3_nodes, [end])
 
+    pos = {}
+    pos[root.value] = (0,1.5)
+    for x in level_1_nodes:
+        pos[x.value] = x.value
+    for x in level_2_nodes:
+        pos[x.value] = x.value
+    for x in level_3_nodes:
+        pos[x.value] = x.value
+    pos[end.value] = (4, 1.5)
+
     G = nx.Graph()
 
     G.add_node(root.value)
@@ -126,5 +136,5 @@ if __name__ == "__main__":
     print(list(G.nodes))
     print(list(G.edges))
 
-    nx.draw(G, with_labels=True, font_weight='bold', alpha=0.8)
+    nx.draw_networkx(G, pos, with_labels=True, font_weight='bold', alpha=0.8)
     plt.savefig("graph.png")
