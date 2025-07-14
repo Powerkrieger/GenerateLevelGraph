@@ -117,7 +117,6 @@ if __name__ == "__main__":
 
     G = nx.Graph()
 
-
     G.add_node(root.value)
     G.add_nodes_from([x.value for x in level_1_nodes])
     G.add_nodes_from([x.value for x in level_2_nodes])
@@ -127,5 +126,5 @@ if __name__ == "__main__":
     print(list(G.nodes))
     print(list(G.edges))
 
-    nx.draw(G, with_labels=True, font_weight='bold')
+    nx.draw(G, with_labels=True, font_weight='bold', alpha=0.8)
     plt.savefig("graph.png")
